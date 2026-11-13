@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación de boda</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:wght@400;700&display=swap');
+
+:root{
+  --paper:#f7f3e9;
+  --ink:#272624;
+  --soft:#6c6760;
+  --gold:#b39355;
+  --line:#d8c7a4;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Libre Baskerville",serif;
+  background-image:radial-gradient(rgba(120,100,70,.06) .7px,transparent .8px);
+  background-size:7px 7px;
+}
+.invitation{max-width:760px;margin:auto;overflow:hidden;background:rgba(247,243,233,.88);box-shadow:0 0 40px rgba(0,0,0,.04)}
+section{
+  min-height:100vh;padding:72px 7vw;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;
+  opacity:0;transform:translateY(25px);transition:opacity 0.9s ease-out, transform 0.9s ease-out;
+}
+section.visible{
+  opacity:1;transform:translateY(0);
+}
+h1,h2{font-family:"DM Serif Display",serif;font-weight:400;margin:0}
+
+/* Portada limpia con tipografía cursiva Alex Brush */
+.hero{background:#fff;min-height:100svh;padding:60px 7vw}
+.names{
+  font-family:"Alex Brush",cursive;
+  font-size:clamp(5.4rem,17vw,8.8rem);
+  line-height:.85;
+  font-weight:400;
+  margin:30px 0 35px;
+  color:var(--ink);
+}
+.names span{display:block}
+.amp{font-size:.58em;line-height:1.15;margin:.1em 0;color:var(--gold)}
+.date{color:var(--gold);font-size:clamp(1.35rem,4.5vw,2.25rem);letter-spacing:.08em;margin-top:25px;white-space:nowrap}
+
+/* Sección independiente para la fotografía a ancho completo con recorte ajustable */
+.photo-section{
+  min-height:auto;
+  padding:0;
+  width:100%;
+  background:#eae4d7;
+  overflow:hidden;
+}
+.photo-section img{
+  width:100%;
+  height:auto;
+  object-fit:cover;
+  object-position:center 50%;
+  display:block;
+  filter:grayscale(100%);
+  transition:filter 0.7s ease;
+}
+.photo-section img:hover{
+  filter:grayscale(0%);
+}
+.placeholder{
+  width:100%;
+  min-height:55vh;
+  display:flex;align-items:center;justify-content:center;color:#777;padding:30px;background:linear-gradient(135deg,#d5cfc2,#eee9de);text-align:center;
+}
+
+.title{font-size:clamp(2.9rem,9vw,4.7rem);margin-bottom:42px}
+.body-text{font-size:clamp(1rem,3.4vw,1.28rem);line-height:1.8;color:var(--soft);max-width:640px}
+
+/* Contenedor de las hojas de laurel doradas (Primer patrón) */
+.leaves{margin:60px 0 35px;width:100%;display:flex;justify-content:center;align-items:center}
+.leaves svg{width:min(380px,90%);height:auto;filter:drop-shadow(0 1px 1.5px rgba(110,75,20,.25))}
+
+.month{font-size:clamp(2.6rem,8vw,4rem);margin:40px 0 45px}
+.calendar{width:100%;display:grid;grid-template-columns:repeat(7,1fr);gap:28px 7px;font-size:clamp(.78rem,2.6vw,1.1rem)}
+.calendar .dow{font-size:.72em;color:#888;text-transform:uppercase}
+.calendar .empty{visibility:hidden}
+.calendar .day{width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin:auto}
+.calendar .wedding{border:3px solid var(--gold);border-radius:50%;color:var(--gold)}
+
+/* Estilos para la sección de Lugar del evento */
+.location-section{min-height:auto;padding-top:40px;padding-bottom:40px}
+.venue-name{font-family:"DM Serif Display",serif;font-size:clamp(1.8rem,5.5vw,2.6rem);color:var(--ink);margin-bottom:16px}
+.venue-address{font-size:clamp(1rem,3.2vw,1.2rem);line-height:1.7;color:var(--soft);max-width:520px;margin:0 auto 30px}
+.map-btn{display:inline-block;text-decoration:none;border:1.5px solid var(--gold);color:var(--ink);background:transparent;padding:15px 32px;border-radius:28px;font-family:"Libre Baskerville",serif;font-size:.95rem;letter-spacing:.04em;transition:all .3s ease}
+.map-btn:hover{background:var(--gold);color:#fff;transform:translateY(-2px)}
+
+.program{gap:0}
+.program h2{margin-bottom:70px}
+.event{width:100%;margin:0 0 70px;transition:transform 0.4s ease}
+.event:hover{transform:translateY(-3px)}
+.time-row{display:flex;align-items:center;gap:22px;justify-content:center;color:var(--gold);margin-bottom:35px}
+.time-row:before,.time-row:after{content:"";height:1px;background:var(--line);flex:1;max-width:150px}
+.time{font-size:clamp(2.6rem,9vw,4rem)}
+.event-name{font-family:"DM Serif Display",serif;font-size:clamp(1.3rem,4vw,1.8rem)}
+.countdown{margin-top:80px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.count-num{font-family:"DM Serif Display",serif;font-size:clamp(2rem,7vw,4rem)}
+.count-label{font-size:clamp(.6rem,2vw,.9rem);margin-top:12px}
+.rsvp h2{font-size:clamp(3rem,10vw,5.2rem)}
+.button{border:0;border-radius:28px;background:#292824;color:#f5f1e7;padding:24px 36px;font-family:"Libre Baskerville",serif;font-size:1.05rem;margin-top:35px;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.08);transition:all 0.3s ease}
+.button:hover{background:var(--gold);transform:translateY(-2px);box-shadow:0 12px 22px rgba(0,0,0,.15)}
+.farewell{font-size:clamp(4rem,16vw,7rem);line-height:.95;margin:150px 0 70px}
+.backtop{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border:0;border-radius:50%;background:#fff;color:#666;font-size:2rem;box-shadow:0 4px 16px rgba(0,0,0,.12);cursor:pointer;transition:transform 0.3s ease, background 0.3s ease;z-index:10}
+.backtop:hover{transform:scale(1.1);background:var(--gold);color:#fff}
+.edit{position:fixed;left:18px;bottom:18px;z-index:10;background:#292824;color:white;border:0;border-radius:20px;padding:12px 17px;cursor:pointer;transition:transform 0.3s ease}
+.edit:hover{transform:scale(1.05)}
+.panel{position:fixed;z-index:20;left:15px;right:15px;bottom:75px;max-width:520px;margin:auto;background:#fff;padding:22px;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.22);display:none;max-height:75vh;overflow:auto;text-align:left}
+.panel.open{display:block}
+.panel label{display:block;font-size:.75rem;margin:12px 0 5px;color:#666}
+.panel input:not([type="range"]),.panel textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font:inherit}
+.panel textarea{min-height:75px}
+.range-row{display:flex;align-items:center;gap:10px}
+.range-row input[type="range"]{flex:1;accent-color:var(--gold);cursor:pointer}
+.range-val{font-size:.8rem;color:var(--ink);min-width:65px;text-align:right}
+.save{background:var(--gold);color:white;border:0;border-radius:9px;padding:12px 20px;margin-top:16px;cursor:pointer;transition:opacity 0.2s}
+.save:hover{opacity:0.9}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}
+.modal-box{background:var(--paper);width:min(500px,100%);border-radius:22px;padding:32px;text-align:center;position:relative}
+.modal-box input{width:100%;padding:13px;margin:8px 0;border:1px solid #ccc;border-radius:8px;font:inherit}
+.close-modal{position:absolute;top:16px;right:20px;background:none;border:0;font-size:1.6rem;color:var(--soft);cursor:pointer}
+@media(min-width:760px){section:not(.photo-section){padding-left:80px;padding-right:80px}}
+</style>
+</head>
+<body>
+
+<!-- Definición SVG reutilizable del primer patrón de laurel dorado (ramas cruzadas) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="goldLeaf1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f2d680"/>
+      <stop offset="40%" stop-color="#c99a3e"/>
+      <stop offset="70%" stop-color="#ebd07a"/>
+      <stop offset="100%" stop-color="#9c7021"/>
+    </linearGradient>
+    <linearGradient id="goldLeaf2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e5c163"/>
+      <stop offset="50%" stop-color="#b28228"/>
+      <stop offset="100%" stop-color="#7d5612"/>
+    </linearGradient>
+    <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b5842c"/>
+      <stop offset="50%" stop-color="#7c5211"/>
+      <stop offset="100%" stop-color="#b5842c"/>
+    </linearGradient>
+
+    <g id="laurel-crossed">
+      <path d="M214 39 C 175 26, 95 36, 14 29" stroke="url(#stemGrad)" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+      <path d="M186 39 C 225 26, 305 36, 386 29" stroke="url(#stemGrad)" stroke-width="2.1" stroke-linecap="round" fill="none"/>
+      <path d="M188 30 C 185 16, 173 9, 165 6 C 166 17, 174 26, 188 30 Z" fill="url(#goldLeaf1)"/>
+      <path d="M188 30 C 178 21, 171 14, 165 6" stroke="#9c7021" stroke-width="0.6" fill="none"/>
+      <path d="M162 29 C 155 15, 138 11, 126 11 C 132 22, 146 28, 162 29 Z" fill="url(#goldLeaf1)"/>
+      <path d="M162 29 C 148 22, 137 16, 126 11" stroke="#9c7021" stroke-width="0.6" fill="none"/>
+      <path d="M152 31 C 146 43, 132 49, 121 51 C 125 39, 137 32, 152 31 Z" fill="url(#goldLeaf2)"/>
+      <path d="M126 30 C 117 17, 100 14, 88 15 C 95 25, 110 30, 126 30 Z" fill="url(#goldLeaf1)"/>
+      <path d="M126 30 C 111 24, 99 19, 88 15" stroke="#9c7021" stroke-width="0.6" fill="none"/>
+      <path d="M116 32 C 110 44, 95 50, 84 52 C 88 40, 101 33, 116 32 Z" fill="url(#goldLeaf2)"/>
+      <path d="M90 31 C 81 19, 65 16, 53 18 C 61 27, 75 31, 90 31 Z" fill="url(#goldLeaf1)"/>
+      <path d="M81 33 C 75 44, 61 49, 51 50 C 55 39, 67 33, 81 33 Z" fill="url(#goldLeaf2)"/>
+      <path d="M56 31 C 48 21, 34 19, 24 21 C 31 28, 43 31, 56 31 Z" fill="url(#goldLeaf1)"/>
+      <path d="M48 32 C 42 41, 30 45, 21 46 C 25 37, 36 32, 48 32 Z" fill="url(#goldLeaf2)"/>
+      <path d="M25 30 C 17 25, 8 25, 2 28 C 8 32, 17 33, 25 30 Z" fill="url(#goldLeaf1)"/>
+      <path d="M212 30 C 215 16, 227 9, 235 6 C 234 17, 226 26, 212 30 Z" fill="url(#goldLeaf1)"/>
+      <path d="M212 30 C 222 21, 229 14, 235 6" stroke="#9c7021" stroke-width="0.6" fill="none"/>
+      <path d="M238 29 C 245 15, 262 11, 274 11 C 268 22, 254 28, 238 29 Z" fill="url(#goldLeaf1)"/>
+      <path d="M238 29 C 252 22, 263 16, 274 11" stroke="#9c7021" stroke-width="0.6" fill="none"/>
+      <path d="M248 31 C 254 43, 268 49, 279 51 C 275 39, 263 32, 248 31 Z" fill="url(#goldLeaf2)"/>
+      <path d="M274 30 C 283 17, 300 14, 312 15 C 305 25, 290 30, 274 30 Z" fill="url(#goldLeaf1)"/>
+      <path d="M274 30 C 289 24, 301 19, 312 15" stroke="#9c7021" stroke-width="0.6" fill="none"/>
+      <path d="M284 32 C 290 44, 305 50, 316 52 C 312 40, 299 33, 284 32 Z" fill="url(#goldLeaf2)"/>
+      <path d="M310 31 C 319 19, 335 16, 347 18 C 339 27, 325 31, 310 31 Z" fill="url(#goldLeaf1)"/>
+      <path d="M319 33 C 325 44, 339 49, 349 50 C 345 39, 333 33, 319 33 Z" fill="url(#goldLeaf2)"/>
+      <path d="M344 31 C 352 21, 366 19, 376 21 C 369 28, 357 31, 344 31 Z" fill="url(#goldLeaf1)"/>
+      <path d="M352 32 C 358 41, 370 45, 379 46 C 375 37, 364 32, 352 32 Z" fill="url(#goldLeaf2)"/>
+      <path d="M375 30 C 383 25, 392 25, 398 28 C 392 32, 383 33, 375 30 Z" fill="url(#goldLeaf1)"/>
+    </g>
+  </defs>
+</svg>
+
+<main class="invitation">
+
+<!-- Sección 1: Portada con nombres y fecha -->
+<section class="hero">
+  <div class="names"><span id="groom">Victor</span><span class="amp">&amp;</span><span id="bride">Arely</span></div>
+  <div class="date" id="heroDate">19 DICIEMBRE 2026</div>
+</section>
+
+<!-- Sección 2: Fotografía completa cubriendo el 100% del ancho y con altura recortable -->
+<section class="photo-section">
+  <div class="placeholder" id="placeholder">Agrega aquí una fotografía de ustedes</div>
+  <img id="mainPhoto" style="display:none" alt="Fotografía de los novios">
+</section>
+
+<!-- Sección 3: Bienvenida y Calendario -->
+<section>
+  <h2 class="title">Queridos invitados</h2>
+  <p class="body-text" id="welcomeText">¡Pronto celebraremos un evento muy importante en nuestra vida: nuestra boda! Los invitamos y estaremos felices de compartir este día especial rodeados de las personas más cercanas.</p>
+  <div class="leaves"><svg viewBox="0 0 400 58"><use href="#laurel-crossed"/></svg></div>
+  <h2 class="month" id="monthTitle">Diciembre 2026</h2>
+  <div class="calendar" id="calendar"></div>
+</section>
+
+<!-- Sección 4: Lugar del evento -->
+<section class="location-section">
+  <div class="leaves" style="margin-top:0"><svg viewBox="0 0 400 58"><use href="#laurel-crossed"/></svg></div>
+  <h2 class="title">Lugar del evento</h2>
+  <div class="venue-name" id="venueName">Jardín Los Olivos</div>
+  <p class="venue-address" id="venueAddress">Camino Real #123, Col. Centro, Ciudad de México</p>
+  <a class="map-btn" id="mapLink" href="https://maps.google.com/?q=Jardin+Los+Olivos" target="_blank" rel="noopener noreferrer">VER EN GOOGLE MAPS</a>
+  <div class="leaves"><svg viewBox="0 0 400 58"><use href="#laurel-crossed"/></svg></div>
+</section>
+
+<!-- Sección 5: Programa y Cuenta Regresiva -->
+<section class="program">
+  <h2 class="title">Programa de la boda</h2>
+  <div class="event"><div class="time-row"><div class="time" id="t1">13:30</div></div><div class="event-name" id="e1">Recepción de invitados</div></div>
+  <div class="event"><div class="time-row"><div class="time" id="t2">14:00</div></div><div class="event-name" id="e2">Ceremonia de Registro Civil</div></div>
+  <div class="event"><div class="time-row"><div class="time" id="t3">15:00</div></div><div class="event-name" id="e3">Taquiza y bebidas</div></div>
+  <div class="countdown">
+    <div><div class="count-num" id="days">0</div><div class="count-label">DÍAS</div></div>
+    <div><div class="count-num" id="hours">0</div><div class="count-label">HORAS</div></div>
+    <div><div class="count-num" id="mins">0</div><div class="count-label">MINUTOS</div></div>
+    <div><div class="count-num" id="secs">0</div><div class="count-label">SEGUNDOS</div></div>
+  </div>
+  <div class="leaves"><svg viewBox="0 0 400 58"><use href="#laurel-crossed"/></svg></div>
+</section>
+
+<!-- Sección 6: Confirmación de asistencia (RSVP) -->
+<section class="rsvp">
+  <h2>¿Podrás asistir?</h2>
+  <p class="body-text">¡Confirma tu asistencia por WhatsApp indicándonos tu nombre y cuántos invitados nos acompañan!</p>
+  <button class="button" onclick="openRSVP()">CONFIRMAR ASISTENCIA</button>
+  <div class="farewell">¡Estaremos<br>felices de<br>verlos!</div>
+  <div class="leaves"><svg viewBox="0 0 400 58"><use href="#laurel-crossed"/></svg></div>
+</section>
+
+</main>
+
+<button class="edit" onclick="togglePanel()">✎ Editar invitación</button>
+<button class="backtop" onclick="scrollTo({top:0,behavior:'smooth'})">⌃</button>
+
+<div class="panel" id="panel">
+  <h3>Personaliza tu invitación</h3>
+  <label>Nombre 1</label><input id="inGroom">
+  <label>Nombre 2</label><input id="inBride">
+  <label>Número de WhatsApp para confirmaciones (con código de país, ej. 5214611234567)</label><input type="tel" id="inWhatsapp" placeholder="5214611234567">
+  <label>Fecha y hora (para calendario y contador)</label><input type="datetime-local" id="inDate">
+  <label>Texto de bienvenida</label><textarea id="inWelcome"></textarea>
+  <label>Nombre del lugar / Salón</label><input id="inVenueName">
+  <label>Dirección del lugar</label><textarea id="inVenueAddress"></textarea>
+  <label>Enlace de Google Maps</label><input type="url" id="inMapUrl" placeholder="https://maps.google.com/...">
+  
+  <label>Fotografía principal</label><input type="file" id="inPhoto" accept="image/*">
+  <label>Recortar altura de la foto (100 = completa sin recorte)</label>
+  <div class="range-row">
+    <input type="range" id="inPhotoHeight" min="30" max="100" value="100" oninput="previewPhotoCrop()">
+    <span class="range-val" id="valPhotoHeight">Completa</span>
+  </div>
+  <label>Ajustar encuadre vertical (arriba / abajo)</label>
+  <div class="range-row">
+    <input type="range" id="inPhotoPos" min="0" max="100" value="50" oninput="previewPhotoCrop()">
+    <span class="range-val" id="valPhotoPos">50%</span>
+  </div>
+
+  <label>Hora 1 / Evento 1</label><input id="inT1"><input id="inE1">
+  <label>Hora 2 / Evento 2</label><input id="inT2"><input id="inE2">
+  <label>Hora 3 / Evento 3</label><input id="inT3"><input id="inE3">
+  <button class="save" onclick="saveSettings()">Guardar cambios</button>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <button class="close-modal" onclick="closeModal()">&times;</button>
+    <h2 class="title" style="font-size:2.4rem;margin-bottom:20px">Confirmar asistencia</h2>
+    <input id="guestName" placeholder="Tu nombre completo" required>
+    <input id="guestCount" type="number" min="1" placeholder="Número de invitados (ej. 2)" required>
+    <button class="button" onclick="sendWhatsAppRSVP()">ENVIAR POR WHATSAPP</button>
+  </div>
+</div>
+
+<script>
+const defaults={
+  groom:"Victor",
+  bride:"Arely",
+  whatsapp:"5214610000000",
+  date:"2026-12-19T14:00",
+  welcome:"¡Pronto celebraremos un evento muy importante en nuestra vida: nuestra boda! Los invitamos y estaremos felices de compartir este día especial rodeados de las personas más cercanas.",
+  venueName:"Jardín Los Olivos",
+  venueAddress:"Camino Real #123, Col. Centro, Ciudad de México",
+  mapUrl:"https://maps.google.com/?q=Jardin+Los+Olivos",
+  photoHeight:"100",
+  photoPos:"50",
+  t1:"13:30",e1:"Recepción de invitados",
+  t2:"14:00",e2:"Ceremonia de Registro Civil",
+  t3:"15:00",e3:"Taquiza y bebidas"
+};
+let settings={...defaults, ...(JSON.parse(localStorage.getItem("weddingSettings")||"null")||{})};
+let photo=localStorage.getItem("weddingPhoto");
+
+function applyPhotoCrop(h, pos){
+  const im=document.getElementById("mainPhoto");
+  if(!im) return;
+  if(Number(h) >= 100){
+    im.style.height = "auto";
+  } else {
+    im.style.height = h + "vh";
+  }
+  im.style.objectPosition = `center ${pos}%`;
+}
+
+function previewPhotoCrop(){
+  const h = document.getElementById("inPhotoHeight").value;
+  const pos = document.getElementById("inPhotoPos").value;
+  document.getElementById("valPhotoHeight").textContent = Number(h) >= 100 ? "Completa" : h + "vh";
+  document.getElementById("valPhotoPos").textContent = pos + "%";
+  applyPhotoCrop(h, pos);
+}
+
+function apply(){
+  ["groom","bride","venueName","venueAddress","t1","e1","t2","e2","t3","e3"].forEach(k=>document.getElementById(k).textContent=settings[k]);
+  document.getElementById("welcomeText").textContent=settings.welcome;
+  document.getElementById("mapLink").href=settings.mapUrl||"#";
+  const d=new Date(settings.date), months=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  document.getElementById("heroDate").textContent=`${d.getDate()} ${months[d.getMonth()].toUpperCase()} ${d.getFullYear()}`;
+  document.getElementById("monthTitle").textContent=`${months[d.getMonth()]} ${d.getFullYear()}`;
+  buildCalendar(d); updateCountdown();
+  if(photo){
+    const im=document.getElementById("mainPhoto");
+    im.src=photo;
+    im.style.display="block";
+    document.getElementById("placeholder").style.display="none";
+    applyPhotoCrop(settings.photoHeight || "100", settings.photoPos || "50");
+  }
+}
+function buildCalendar(target){
+ const cal=document.getElementById("calendar");cal.innerHTML="";
+ ["LUN","MAR","MIÉ","JUE","VIE","SÁB","DOM"].forEach(x=>cal.innerHTML+=`<div class="dow">${x}</div>`);
+ const first=new Date(target.getFullYear(),target.getMonth(),1);let offset=(first.getDay()+6)%7;
+ for(let i=0;i<offset;i++)cal.innerHTML+='<div class="empty">0</div>';
+ const last=new Date(target.getFullYear(),target.getMonth()+1,0).getDate();
+ for(let n=1;n<=last;n++){const wedding=n===target.getDate()? " wedding":"";cal.innerHTML+=`<div class="day${wedding}">${n}</div>`}
+}
+function updateCountdown(){
+ const diff=Math.max(0,new Date(settings.date)-new Date()), sec=Math.floor(diff/1000);
+ const vals=[Math.floor(sec/86400),Math.floor(sec%86400/3600),Math.floor(sec%3600/60),sec%60];
+ ["days","hours","mins","secs"].forEach((id,i)=>document.getElementById(id).textContent=String(vals[i]).padStart(2,"0"));
+}
+setInterval(updateCountdown,1000);
+
+// Animación de aparición gradual (fade-in) al hacer scroll
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+    }
+  });
+},{threshold: 0.1});
+
+document.querySelectorAll("section").forEach(sec => observer.observe(sec));
+
+function togglePanel(){
+ const p=document.getElementById("panel");p.classList.toggle("open");
+ if(p.classList.contains("open")){
+  document.getElementById("inGroom").value=settings.groom;
+  document.getElementById("inBride").value=settings.bride;
+  document.getElementById("inWhatsapp").value=settings.whatsapp;
+  document.getElementById("inDate").value=settings.date;
+  document.getElementById("inWelcome").value=settings.welcome;
+  document.getElementById("inVenueName").value=settings.venueName;
+  document.getElementById("inVenueAddress").value=settings.venueAddress;
+  document.getElementById("inMapUrl").value=settings.mapUrl;
+  document.getElementById("inPhotoHeight").value=settings.photoHeight || "100";
+  document.getElementById("inPhotoPos").value=settings.photoPos || "50";
+  previewPhotoCrop();
+  ["t1","e1","t2","e2","t3","e3"].forEach(k=>document.getElementById("in"+k.charAt(0).toUpperCase()+k.slice(1)).value=settings[k]);
+ }
+}
+function saveSettings(){
+ settings.groom=inGroom.value;
+ settings.bride=inBride.value;
+ settings.whatsapp=inWhatsapp.value.replace(/\D/g,"");
+ settings.date=inDate.value;
+ settings.welcome=inWelcome.value;
+ settings.venueName=inVenueName.value;
+ settings.venueAddress=inVenueAddress.value;
+ settings.mapUrl=inMapUrl.value;
+ settings.photoHeight=inPhotoHeight.value;
+ settings.photoPos=inPhotoPos.value;
+ ["t1","e1","t2","e2","t3","e3"].forEach(k=>settings[k]=document.getElementById("in"+k.charAt(0).toUpperCase()+k.slice(1)).value);
+ localStorage.setItem("weddingSettings",JSON.stringify(settings));
+ const file=inPhoto.files[0];if(file){const r=new FileReader();r.onload=e=>{photo=e.target.result;localStorage.setItem("weddingPhoto",photo);apply()};r.readAsDataURL(file)} else apply();
+ document.getElementById("panel").classList.remove("open");
+}
+function openRSVP(){document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+function sendWhatsAppRSVP(){
+  const name=document.getElementById("guestName").value.trim();
+  const count=document.getElementById("guestCount").value.trim();
+  if(!name || !count || Number(count) < 1){
+    alert("Por favor escribe tu nombre y el número de invitados.");
+    return;
+  }
+  const phone=(settings.whatsapp||"").replace(/\D/g,"");
+  const text=`¡Hola! Confirmo mi asistencia a la boda de ${settings.groom} y ${settings.bride}.\n\n*Nombre:* ${name}\n*Número de invitados:* ${count}`;
+  const url=phone ? `https://wa.me/${phone}?text=${encodeURIComponent(text)}` : `https://wa.me/?text=${encodeURIComponent(text)}`;
+  closeModal();
+  window.open(url,"_blank","noopener,noreferrer");
+}
+apply();
+</script>
+</body></html>
