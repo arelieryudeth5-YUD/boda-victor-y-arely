@@ -195,7 +195,7 @@ h1,h2{font-family:"DM Serif Display",serif;font-weight:400;margin:0}
 <!-- Sección 2: Fotografía completa cubriendo el 100% del ancho y con altura recortable -->
 <section class="photo-section">
   <div class="placeholder" id="placeholder">Agrega aquí una fotografía de ustedes</div>
-  <img id="mainPhoto" style="display:none" alt="Fotografía de los novios">
+  <img id="mainPhoto" src="foto.jpg" alt="Fotografía de los novios" style="width:100%; height:80; object-fit:cover; object-position:center 80%;">
 </section>
 
 <!-- Sección 3: Bienvenida y Calendario -->
@@ -211,9 +211,9 @@ h1,h2{font-family:"DM Serif Display",serif;font-weight:400;margin:0}
 <section class="location-section">
   <div class="leaves" style="margin-top:0"><svg viewBox="0 0 400 58"><use href="#laurel-crossed"/></svg></div>
   <h2 class="title">Lugar del evento</h2>
-  <div class="venue-name" id="venueName">Jardín Los Olivos</div>
-  <p class="venue-address" id="venueAddress">Camino Real #123, Col. Centro, Ciudad de México</p>
-  <a class="map-btn" id="mapLink" href="https://maps.google.com/?q=Jardin+Los+Olivos" target="_blank" rel="noopener noreferrer">VER EN GOOGLE MAPS</a>
+  <div class="venue-name" id="venueName">La cabaña Del Leon</div>
+  <p class="venue-address" id="venueAddress">La cabaña Del Leon, Celaya Gto.</p>
+  <a class="map-btn" id="mapLink" href="https://maps.app.goo.gl/fLkySrdoE3eSX2PM7" target="_blank" rel="noopener noreferrer">VER EN GOOGLE MAPS</a>
   <div class="leaves"><svg viewBox="0 0 400 58"><use href="#laurel-crossed"/></svg></div>
 </section>
 
@@ -289,14 +289,14 @@ h1,h2{font-family:"DM Serif Display",serif;font-weight:400;margin:0}
 const defaults={
   groom:"Victor",
   bride:"Arely",
-  whatsapp:"5214610000000",
+  whatsapp:"4611109479",
   date:"2026-12-19T14:00",
   welcome:"¡Pronto celebraremos un evento muy importante en nuestra vida: nuestra boda! Los invitamos y estaremos felices de compartir este día especial rodeados de las personas más cercanas.",
-  venueName:"Jardín Los Olivos",
-  venueAddress:"Camino Real #123, Col. Centro, Ciudad de México",
-  mapUrl:"https://maps.google.com/?q=Jardin+Los+Olivos",
-  photoHeight:"100",
-  photoPos:"50",
+  venueName:"La Cabaña Del Leon",
+  venueAddress:"La Cabaña Del Leon, Celaya, Gto.",
+  mapUrl:"https://maps.app.goo.gl/fLkySrdoE3eSX2PM7",
+  photoHeight:"80",
+  photoPos:"80",
   t1:"13:30",e1:"Recepción de invitados",
   t2:"14:00",e2:"Ceremonia de Registro Civil",
   t3:"15:00",e3:"Taquiza y bebidas"
